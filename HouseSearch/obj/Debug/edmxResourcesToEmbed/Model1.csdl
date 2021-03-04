@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="projectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="City">
+    <Key>
+      <PropertyRef Name="CT_code" />
+    </Key>
+    <Property Name="CT_code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CT_name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="REG_code" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Region" Relationship="Self.FK_City_Region" FromRole="City" ToRole="Region" />
+    <NavigationProperty Name="Houses" Relationship="Self.FK_House_City" FromRole="City" ToRole="House" />
+  </EntityType>
+  <EntityType Name="House">
+    <Key>
+      <PropertyRef Name="HS_code" />
+    </Key>
+    <Property Name="HS_code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="HS_address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="HS_type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="HS_price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="HS_nb_rooms" Type="Byte" />
+    <Property Name="HS_nb_bathrooms" Type="Byte" />
+    <Property Name="HS_garage" Type="Boolean" />
+    <Property Name="HS_pool" Type="Boolean" />
+    <Property Name="HS_fireplace" Type="Boolean" />
+    <Property Name="CT_code" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="City" Relationship="Self.FK_House_City" FromRole="House" ToRole="City" />
+  </EntityType>
+  <EntityType Name="Region">
+    <Key>
+      <PropertyRef Name="REG_code" />
+    </Key>
+    <Property Name="REG_code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="REG_name" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Cities" Relationship="Self.FK_City_Region" FromRole="Region" ToRole="City" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="username" />
+    </Key>
+    <Property Name="username" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="user_type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <Association Name="FK_City_Region">
+    <End Role="Region" Type="Self.Region" Multiplicity="1" />
+    <End Role="City" Type="Self.City" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Region">
+        <PropertyRef Name="REG_code" />
+      </Principal>
+      <Dependent Role="City">
+        <PropertyRef Name="REG_code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_House_City">
+    <End Role="City" Type="Self.City" Multiplicity="1" />
+    <End Role="House" Type="Self.House" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="City">
+        <PropertyRef Name="CT_code" />
+      </Principal>
+      <Dependent Role="House">
+        <PropertyRef Name="CT_code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="projectEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Cities" EntityType="Self.City" />
+    <EntitySet Name="Houses" EntityType="Self.House" />
+    <EntitySet Name="Regions" EntityType="Self.Region" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <AssociationSet Name="FK_City_Region" Association="Self.FK_City_Region">
+      <End Role="Region" EntitySet="Regions" />
+      <End Role="City" EntitySet="Cities" />
+    </AssociationSet>
+    <AssociationSet Name="FK_House_City" Association="Self.FK_House_City">
+      <End Role="City" EntitySet="Cities" />
+      <End Role="House" EntitySet="Houses" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

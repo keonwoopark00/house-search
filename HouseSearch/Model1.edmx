@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="projectModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="CT_code" />
+          </Key>
+          <Property Name="CT_code" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CT_name" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="REG_code" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="House">
+          <Key>
+            <PropertyRef Name="HS_code" />
+          </Key>
+          <Property Name="HS_code" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HS_address" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="HS_type" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="HS_price" Type="money" Nullable="false" />
+          <Property Name="HS_nb_rooms" Type="tinyint" />
+          <Property Name="HS_nb_bathrooms" Type="tinyint" />
+          <Property Name="HS_garage" Type="bit" />
+          <Property Name="HS_pool" Type="bit" />
+          <Property Name="HS_fireplace" Type="bit" />
+          <Property Name="CT_code" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Region">
+          <Key>
+            <PropertyRef Name="REG_code" />
+          </Key>
+          <Property Name="REG_code" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="REG_name" Type="nvarchar" MaxLength="15" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="username" />
+          </Key>
+          <Property Name="username" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="user_type" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <Association Name="FK_City_Region">
+          <End Role="Region" Type="Self.Region" Multiplicity="1" />
+          <End Role="City" Type="Self.City" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Region">
+              <PropertyRef Name="REG_code" />
+            </Principal>
+            <Dependent Role="City">
+              <PropertyRef Name="REG_code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_House_City">
+          <End Role="City" Type="Self.City" Multiplicity="1" />
+          <End Role="House" Type="Self.House" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="City">
+              <PropertyRef Name="CT_code" />
+            </Principal>
+            <Dependent Role="House">
+              <PropertyRef Name="CT_code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="projectModelStoreContainer">
+          <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="House" EntityType="Self.House" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Region" EntityType="Self.Region" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_City_Region" Association="Self.FK_City_Region">
+            <End Role="Region" EntitySet="Region" />
+            <End Role="City" EntitySet="City" />
+          </AssociationSet>
+          <AssociationSet Name="FK_House_City" Association="Self.FK_House_City">
+            <End Role="City" EntitySet="City" />
+            <End Role="House" EntitySet="House" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="projectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="CT_code" />
+          </Key>
+          <Property Name="CT_code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CT_name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="REG_code" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Region" Relationship="Self.FK_City_Region" FromRole="City" ToRole="Region" />
+          <NavigationProperty Name="Houses" Relationship="Self.FK_House_City" FromRole="City" ToRole="House" />
+        </EntityType>
+        <EntityType Name="House">
+          <Key>
+            <PropertyRef Name="HS_code" />
+          </Key>
+          <Property Name="HS_code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HS_address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HS_type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HS_price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="HS_nb_rooms" Type="Byte" />
+          <Property Name="HS_nb_bathrooms" Type="Byte" />
+          <Property Name="HS_garage" Type="Boolean" />
+          <Property Name="HS_pool" Type="Boolean" />
+          <Property Name="HS_fireplace" Type="Boolean" />
+          <Property Name="CT_code" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="City" Relationship="Self.FK_House_City" FromRole="House" ToRole="City" />
+        </EntityType>
+        <EntityType Name="Region">
+          <Key>
+            <PropertyRef Name="REG_code" />
+          </Key>
+          <Property Name="REG_code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="REG_name" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Cities" Relationship="Self.FK_City_Region" FromRole="Region" ToRole="City" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="username" />
+          </Key>
+          <Property Name="username" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="user_type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_City_Region">
+          <End Role="Region" Type="Self.Region" Multiplicity="1" />
+          <End Role="City" Type="Self.City" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Region">
+              <PropertyRef Name="REG_code" />
+            </Principal>
+            <Dependent Role="City">
+              <PropertyRef Name="REG_code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_House_City">
+          <End Role="City" Type="Self.City" Multiplicity="1" />
+          <End Role="House" Type="Self.House" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="City">
+              <PropertyRef Name="CT_code" />
+            </Principal>
+            <Dependent Role="House">
+              <PropertyRef Name="CT_code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="projectEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Cities" EntityType="Self.City" />
+          <EntitySet Name="Houses" EntityType="Self.House" />
+          <EntitySet Name="Regions" EntityType="Self.Region" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_City_Region" Association="Self.FK_City_Region">
+            <End Role="Region" EntitySet="Regions" />
+            <End Role="City" EntitySet="Cities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_House_City" Association="Self.FK_House_City">
+            <End Role="City" EntitySet="Cities" />
+            <End Role="House" EntitySet="Houses" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="projectModelStoreContainer" CdmEntityContainer="projectEntities">
+          <EntitySetMapping Name="Cities">
+            <EntityTypeMapping TypeName="projectModel.City">
+              <MappingFragment StoreEntitySet="City">
+                <ScalarProperty Name="CT_code" ColumnName="CT_code" />
+                <ScalarProperty Name="CT_name" ColumnName="CT_name" />
+                <ScalarProperty Name="REG_code" ColumnName="REG_code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Houses">
+            <EntityTypeMapping TypeName="projectModel.House">
+              <MappingFragment StoreEntitySet="House">
+                <ScalarProperty Name="HS_code" ColumnName="HS_code" />
+                <ScalarProperty Name="HS_address" ColumnName="HS_address" />
+                <ScalarProperty Name="HS_type" ColumnName="HS_type" />
+                <ScalarProperty Name="HS_price" ColumnName="HS_price" />
+                <ScalarProperty Name="HS_nb_rooms" ColumnName="HS_nb_rooms" />
+                <ScalarProperty Name="HS_nb_bathrooms" ColumnName="HS_nb_bathrooms" />
+                <ScalarProperty Name="HS_garage" ColumnName="HS_garage" />
+                <ScalarProperty Name="HS_pool" ColumnName="HS_pool" />
+                <ScalarProperty Name="HS_fireplace" ColumnName="HS_fireplace" />
+                <ScalarProperty Name="CT_code" ColumnName="CT_code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Regions">
+            <EntityTypeMapping TypeName="projectModel.Region">
+              <MappingFragment StoreEntitySet="Region">
+                <ScalarProperty Name="REG_code" ColumnName="REG_code" />
+                <ScalarProperty Name="REG_name" ColumnName="REG_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="projectModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="user_type" ColumnName="user_type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

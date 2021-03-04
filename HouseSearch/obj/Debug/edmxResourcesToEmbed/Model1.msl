@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="projectModelStoreContainer" CdmEntityContainer="projectEntities">
+    <EntitySetMapping Name="Cities">
+      <EntityTypeMapping TypeName="projectModel.City">
+        <MappingFragment StoreEntitySet="City">
+          <ScalarProperty Name="CT_code" ColumnName="CT_code" />
+          <ScalarProperty Name="CT_name" ColumnName="CT_name" />
+          <ScalarProperty Name="REG_code" ColumnName="REG_code" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Houses">
+      <EntityTypeMapping TypeName="projectModel.House">
+        <MappingFragment StoreEntitySet="House">
+          <ScalarProperty Name="HS_code" ColumnName="HS_code" />
+          <ScalarProperty Name="HS_address" ColumnName="HS_address" />
+          <ScalarProperty Name="HS_type" ColumnName="HS_type" />
+          <ScalarProperty Name="HS_price" ColumnName="HS_price" />
+          <ScalarProperty Name="HS_nb_rooms" ColumnName="HS_nb_rooms" />
+          <ScalarProperty Name="HS_nb_bathrooms" ColumnName="HS_nb_bathrooms" />
+          <ScalarProperty Name="HS_garage" ColumnName="HS_garage" />
+          <ScalarProperty Name="HS_pool" ColumnName="HS_pool" />
+          <ScalarProperty Name="HS_fireplace" ColumnName="HS_fireplace" />
+          <ScalarProperty Name="CT_code" ColumnName="CT_code" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Regions">
+      <EntityTypeMapping TypeName="projectModel.Region">
+        <MappingFragment StoreEntitySet="Region">
+          <ScalarProperty Name="REG_code" ColumnName="REG_code" />
+          <ScalarProperty Name="REG_name" ColumnName="REG_name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="projectModel.User">
+        <MappingFragment StoreEntitySet="User">
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="user_type" ColumnName="user_type" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

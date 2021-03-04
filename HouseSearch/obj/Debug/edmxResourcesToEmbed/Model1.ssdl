@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="projectModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="City">
+    <Key>
+      <PropertyRef Name="CT_code" />
+    </Key>
+    <Property Name="CT_code" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CT_name" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="REG_code" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="House">
+    <Key>
+      <PropertyRef Name="HS_code" />
+    </Key>
+    <Property Name="HS_code" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="HS_address" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="HS_type" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="HS_price" Type="money" Nullable="false" />
+    <Property Name="HS_nb_rooms" Type="tinyint" />
+    <Property Name="HS_nb_bathrooms" Type="tinyint" />
+    <Property Name="HS_garage" Type="bit" />
+    <Property Name="HS_pool" Type="bit" />
+    <Property Name="HS_fireplace" Type="bit" />
+    <Property Name="CT_code" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Region">
+    <Key>
+      <PropertyRef Name="REG_code" />
+    </Key>
+    <Property Name="REG_code" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="REG_name" Type="nvarchar" MaxLength="15" Nullable="false" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="username" />
+    </Key>
+    <Property Name="username" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="password" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="user_type" Type="nvarchar" MaxLength="10" />
+  </EntityType>
+  <Association Name="FK_City_Region">
+    <End Role="Region" Type="Self.Region" Multiplicity="1" />
+    <End Role="City" Type="Self.City" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Region">
+        <PropertyRef Name="REG_code" />
+      </Principal>
+      <Dependent Role="City">
+        <PropertyRef Name="REG_code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_House_City">
+    <End Role="City" Type="Self.City" Multiplicity="1" />
+    <End Role="House" Type="Self.House" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="City">
+        <PropertyRef Name="CT_code" />
+      </Principal>
+      <Dependent Role="House">
+        <PropertyRef Name="CT_code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="projectModelStoreContainer">
+    <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="House" EntityType="Self.House" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Region" EntityType="Self.Region" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_City_Region" Association="Self.FK_City_Region">
+      <End Role="Region" EntitySet="Region" />
+      <End Role="City" EntitySet="City" />
+    </AssociationSet>
+    <AssociationSet Name="FK_House_City" Association="Self.FK_House_City">
+      <End Role="City" EntitySet="City" />
+      <End Role="House" EntitySet="House" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
